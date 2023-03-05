@@ -1,0 +1,17 @@
+<div id="taskModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm deletion</h4>
+            </div>
+            <div class="modal-body">Are your sure you want to delete?</div>
+            <div class="modal-footer">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Yes, delete." />
+                </form>
+                <a class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1>Здесь вы можете найти талон по ID.</h1>
+    <p>Как правило, достаточно ввести последние 4 символа ID</p>
+    <form action="{% url 'search:index' %}" class="navbar-form navbar-left" method="get">
+      <div class="input-group">
+          <input id="search:index" name="q" type="text" class="form-control" placeholder="Поиск">
+          <span class="input-group-btn">
+              <button type="submit" class="btn btn-default">Найти</button>
+          </span>
+      </div>
+    </form>
+    {% if ticket_lists %}
+        {% for ticket in ticket_lists %}
+            <main>
+                <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                      <div class="col">
+                        <div class="card mb-4 rounded-3 shadow-sm">
+                          <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">{{ticket.title}}</h4>
+                          </div>
+                          <div class="card-body">
+                            <h1 class="card-title pricing-card-title">{{ticket.price}} руб.</h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                              <li>{{ticket.description}}</li>
+                              <li>ID: {{ticket.id_for_use}}</li>
+                              <li>Владелец: {{ticket.user_id.first_name}} {{ticket.user_id.last_name}}</li>
+                            </ul>
+                          </div>
+                            <form action="{% url 'search:delete' %}?ticket_id={{ ticket.id_for_use }}&next={{ request.path }}" method="post" onsubmit="window.mytest()">
+                              {% csrf_token %}
+                              <button id="subm_use" type="submit" class="btn btn-secondary">Подтвердить использование</button>
+                            </form>
+                            <script type="text/javascript">window.mytest = function() {
+                                var isValid = confirm('Использовать талон?');
+                                if (!isValid) {
+                                  event.preventDefault();  alert("Использование талона отменено. Талон сохранен.");
+                                }
+                              }
+                            </script>
+                        </div>
+                      </div>
+                </div>
+              </main>
+        {% endfor %}
+    {% else %}
+        <p>Не найдено талонов с таким ID, либо пользователь не отметил данный талон как используемый<br>Проверьте ID, статус талона и повторите попытку</p>
+    {% endif %}
+{% endblock %}

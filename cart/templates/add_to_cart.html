@@ -1,0 +1,4 @@
+<form action="{% url 'cart:add_to_cart' %}?ticket_id={{ ticket_store.ticket.id }}&next={{ request.path }}" method="post">
+    {% csrf_token %}
+    <input type="submit" class="w-100 btn btn-lg btn-outline-primary" value="Добавить в корзину">
+</form>
